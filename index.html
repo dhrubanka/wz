@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--boarders-->
+<div id="section_4" style="background-color:mediumseagreen">
+    <div class="container"><p class="subheading" style="border-color:whitesmoke;color: white;">Boarders List</p>
+        <select class="form-control btn-light drop_list" style="width: 100%;">
+            <option id="wing1" onclick="loadXMLDoc('wing_1')">WING 1</option>
+            <option onclick="loadXMLDoc('wing_2')">WING 2</option>
+            <option onclick="loadXMLDoc('wing_3')">WING 3</option>
+            <option onclick="loadXMLDoc('wing_4')">WING 4</option>
+            <option onclick="loadXMLDoc('wing_5')">WING 5</option>
+            <option onclick="loadXMLDoc('wing_6')">WING 6</option>
+        </select>
+        <div class="col-lg-12 col-md-12 col-sm-12" style="width:auto;overflow-y:auto;overflow-x:auto; min-width:500px; height:500px;padding:0px;margin:10px 0px 0px 0px;">
+            <div>
+                <table id="boarderTable" class="table" style="text-align: center;"> </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+
+<script  type="text/javascript">
+// code for reading XML file
+
+// Boarders list
+function loadXMLDoc(fileName) {
+    let xml_http = new XMLHttpRequest();
+    xml_http.open("GET", "https://dhrubanka.github.io/wz/"+fileName+".xml", true);
+  xml_http.responseType = 'document';
+  xml_http.overrideMimeType('text/xml');
+ 
+  
+    xml_http.onreadystatechange = function() {
+        if (xml_http.readyState == xml_http.DONE && xml_http.status == 200) {
+           
+            PopulateTable(this);
+        }
+    };
+    
+    xml_http.send();
+ 
+}
+function PopulateTable(xml) {
+    let i;
+    let xmlDoc = xml.responseXML;
+    let table="<thead class='thead-dark'><tr><th>#</th><th>Name</th><th>Roll No.</th><th>Room</th><th>Department</th><th>Contact</th></tr></thead>";
+    let x = xmlDoc.getElementsByTagName("boarders");
+    for (i = 0; i <x.length; i++) {
+        table += "<tr><td>" +
+            (i+1) +
+            "</td><td>" +
+            x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue +
+            "</td><td>" +
+            x[i].getElementsByTagName("roll")[0].childNodes[0].nodeValue +
+            "</td><td>" +
+            x[i].getElementsByTagName("room")[0].childNodes[0].nodeValue +
+            "</td><td>" +
+            x[i].getElementsByTagName("dept")[0].childNodes[0].nodeValue +
+            "</td><td>" +
+            x[i].getElementsByTagName("contact")[0].childNodes[0].nodeValue +
+            "</td></tr>";
+    }
+    document.getElementById("boarderTable").innerHTML = table;
+}
+
+
+/// this html part where  I am using it
+</script>
